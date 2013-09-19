@@ -20,10 +20,14 @@
 		<!-- For syntax highlighting -->
 		<link rel="stylesheet" href="lib/css/zenburn.css">
 
+        <link href="prettify.css" type="text/css" rel="stylesheet" />
+
 		<!-- If the query includes 'print-pdf', use the PDF print sheet -->
 		<script>
 			document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
 		</script>
+
+        <script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js?skin=sunburst"></script>
 
 		<!--[if lt IE 9]>
 		<script src="lib/js/html5shiv.js"></script>
@@ -161,7 +165,7 @@
 
                 <section>
                     <h2>Interface Static Methods</h2>
-                    <pre>
+                    <pre class="prettyprint">
 // in java.util.Comparator:
 public <b>static</b> &lt;T extends Comparable&lt;? super T&gt;&gt;
     Comparator&lt;T&gt; naturalOrder() <b>{
@@ -216,7 +220,7 @@ public <b>static</b> &lt;T extends Comparable&lt;? super T&gt;&gt;
 
                 <section>
                     <h2>Interface Default Methods</h2>
-                    <pre>
+                    <pre class="prettyprint">
 // in java.lang.Iterable:
 public <b>default</b> void forEach(Consumer&lt;? super T&gt; action) <b>{
     Objects.requireNonNull(action);
@@ -229,7 +233,7 @@ public <b>default</b> void forEach(Consumer&lt;? super T&gt; action) <b>{
 <!--
                 <section>
                     <h2>Interface Default Methods</h2>
-                    <pre>
+                    <pre class="prettyprint">
 public interface PhoneNumber {
 
     public abstract String getAreaCode();
@@ -294,7 +298,7 @@ public interface PhoneNumber {
 
                 <section>
                     <h2>@Functional Interfaces</h2>
-                    <pre>
+                    <pre class="prettyprint">
 @Functional
 public interface Runnable {
     public abstract void run();
@@ -306,7 +310,7 @@ public interface Runnable {
                 <!-- better generic type inference: -->
                 <section>
                     <h2>Better Generic Type Inference</h2>
-                    <pre>
+                    <pre class="prettyprint">
 class MyList&lt;E&gt; {
     static &lt;Z&gt; List&lt;Z&gt; empty() { ... }
     static &lt;Z&gt; List&lt;Z&gt; combine(Z head, List&lt;Z&gt; tail) { ... }
@@ -365,7 +369,7 @@ str = MyList.empty().first(); // 8, not 7
 
                 <section>
                     <h2>More Annotatable Sites</h2>
-                    <pre>
+                    <pre class="prettyprint">
 // at instance creation:
 MyObject mo = new @Interned MyObject();
 
@@ -383,7 +387,7 @@ void monitorTemperature() throws @Critical TemperatureException { ... }
                 <!-- repeatable annotations: -->
                 <section>
                     <h2>Repeating Annotations</h2>
-                    <pre>
+                    <pre class="prettyprint">
 @Schedule(dayOfWeek="Tue", hour="02")
 @Schedule(dayOfWeek="Thu", hour="02")
 public void deleteOldLogs() { ... }
@@ -574,7 +578,7 @@ public void deleteOldLogs() { ... }
 
                 <section>
                     <h2>java.util.Objects</h2>
-                    <pre>
+                    <pre class="prettyprint">
 String s1 = null;
 String s2 = "a secret string";
 
@@ -620,7 +624,7 @@ System.out.println(java.util.Objects.nonNull(s2)); // true
 
                 <section>
                     <h2>java.lang.String</h2>
-                    <pre>
+                    <pre class="prettyprint">
 // prints "Java_User_Group":
 System.out.println(String.join("_", "Java", "User", "Group"));
 
@@ -633,7 +637,7 @@ System.out.println(String.join("_", strings);
 
                 <section>
                     <h2>java.util.StringJoiner</h2>
-                    <pre>
+                    <pre class="prettyprint">
 // prints "Java*User*Group":
 StringJoiner sj1 = new StringJoiner("*");
 sj1.add("Java").add("User").add("Group");
