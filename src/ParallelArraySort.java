@@ -5,10 +5,11 @@ import java.util.StringJoiner;
 public class ParallelArraySort {
 
     public static void main(String[] args) {
+
         int numCores = Runtime.getRuntime().availableProcessors();
         System.out.println("Num cores: " + numCores);
+
         int[] intArray = createIntArray(25_000_000);
-        //printArray(intArray);
         long seqStart = System.currentTimeMillis();
         Arrays.sort(intArray);
         long seqEnd = System.currentTimeMillis();

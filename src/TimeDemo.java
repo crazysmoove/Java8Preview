@@ -10,7 +10,7 @@ import java.util.Locale;
 public class TimeDemo {
     public static void main(String[] args) throws InterruptedException {
         TimeDemo demo = new TimeDemo();
-        //demo.testEnums();
+        demo.testEnums();
         //demo.testDates();
         //demo.testTimes();
         //demo.testTimeZones();
@@ -18,7 +18,7 @@ public class TimeDemo {
         //demo.testParsersAndFormatters();
         //demo.testTemporals();
         //demo.testTimeSpans();
-        demo.testClock();
+        //demo.testClock();
     }
 
     private void testClock() throws InterruptedException {

@@ -10,13 +10,13 @@ public class CollectionApiExamples {
     public static void main(String[] args) {
         CollectionApiExamples e = new CollectionApiExamples();
         e.testRemoveIf();
-        e.testListSort();
-        e.testListReplaceAll();
-        e.testMapRemoveIfAbsent();
-        e.testMapRemove();
-        e.testMapReplace1();
-        e.testMapReplace2();
-        e.testGetOrDefault();
+        //e.testListSort();
+        //e.testListReplaceAll();
+        //e.testMapRemoveIfAbsent();
+        //e.testMapRemove();
+        //e.testMapReplace1();
+        //e.testMapReplace2();
+        //e.testGetOrDefault();
     }
 
     private void testGetOrDefault() {
