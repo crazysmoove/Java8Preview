@@ -1,0 +1,832 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>Java 8 Preview - Chris Roberts</title>
+
+		<meta name="description" content="Java 8 Presentation for the Memphis Java User Group">
+		<meta name="author" content="Chris Roberts">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<link rel="stylesheet" href="css/reveal.min.css">
+		<link rel="stylesheet" href="css/theme/default.css" id="theme">
+
+		<!-- For syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- If the query includes 'print-pdf', use the PDF print sheet -->
+		<script>
+			document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<div class="slides">
+
+			    <section>
+			        <h1>Java 8 Preview</h1>
+			        <p>Chris Roberts</p>
+			        <p>@crazysmoove</p>
+			    </section>
+
+                <section>
+                    <img src="images/the_ocho.jpg" alt=""/>
+                </section>
+
+                <section>
+                    <h2>Release Schedule</h2>
+                    <ol>
+                        <li>Developer Preview &mdash; 9/15/13</li>
+                        <li>API Freeze &mdash; 10/10/13</li>
+                        <li>Final Release Candidate (Milestone 9) &mdash; 1/23/14</li>
+                        <li>General Availability &mdash; 3/18/14</li>
+                    </ol>
+                </section>
+
+                <section>
+                    <h2>Download</h2>
+                    <a href="https://jdk8.java.net/download.html">https://jdk8.java.net/download.html</a>
+                </section>
+
+                <section>
+                    <h2>Tonight</h2>
+                    <ol>
+                        <li>Language Updates</li>
+                        <li>New &amp; Updated APIs</li>
+                        <li>Nashorn (JavaScript on JVM)</li>
+                        <li>Compiler &amp; Runtime Improvements</li>
+                    </ol>
+                </section>
+
+                <section>
+                    <h2>Next Month</h2>
+                    <h1>Project Lambda</h1>
+                    <ol>
+                        <li>Functional Programming &amp; Syntax</li>
+                        <li>Collections API Updates</li>
+                        <li>java.util.Stream</li>
+                    </ol>
+                </section>
+
+                <section>
+                    <h2>No dia de S&atilde;o Nunca &agrave; tarde</h2>
+                    <h3><i>(in the afternoon of St. Never's Day)</i></h3>
+                    <ol>
+                        <li>Security</li>
+                        <li>Internationalization</li>
+                        <li>Removed Features</li>
+                    </ol>
+                </section>
+
+                <section>
+                    <h2>Language Updates</h2>
+                    <ul>
+                        <li>New Interface Features</li>
+                        <li>Better Type Inference</li>
+                        <li>More Flexible Annotations</li>
+                    </ul>
+                </section>
+
+                <!-- static interface methods: -->
+                <section>
+                    <h2>New Interface Feature</h2>
+                    <h1>Static Methods</h1>
+                    <ul>
+                        <li>method body defined inside an interface</li>
+                        <li>is <b>not</b> inherited by sub-interfaces</li>
+                    </ul>
+                </section>
+                <section>
+                    <h2>Interface Static Methods</h2>
+                    <blockquote>
+                        Often, an interface is the most appropriate
+                        place to declare methods that produce or manipulate
+                        objects of the interface type
+                    </blockquote>
+                    <cite>&mdash; JSR 335, Lambda Specification</cite>
+                </section>
+
+                <section>
+                    <h2>Interface Static Methods</h2>
+                    <ul>
+                        <li>
+                            Java 7:
+                            <code>java.util.Collection</code> interface
+                            <br />
+                            Java 7:
+                            <code>java.util.Collection<b>s</b>.emptyList()</code>
+                        </li>
+                        <li>
+                            Java 8:
+                            <code>java.util.Comparator</code> interface
+                            <br />
+                            Java 8:
+                            <code>java.util.Comparator.reverseOrder()</code>
+                        </li>
+                        <li>
+                            Java 8:
+                            <code>java.util.Stream</code> interface
+                            <br />
+                            Java 8:
+                            <code>java.util.Stream.empty()</code>
+                        </li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>Interface Static Methods</h2>
+                    <pre>
+// in java.util.Comparator:
+public <b>static</b> &lt;T extends Comparable&lt;? super T&gt;&gt;
+    Comparator&lt;T&gt; naturalOrder() <b>{
+        return (Comparator&lt;T&gt;)
+            Comparators.NaturalOrderComparator.INSTANCE;
+}</b>
+                    </pre>
+                </section>
+
+                <!-- default interface methods: -->
+                <section>
+                    <h2>New Interface Feature</h2>
+                    <h1>Default Methods</h1>
+                    <ul>
+                        <li>
+                            adds new methods to existing interfaces
+                            without breaking code
+                        </li>
+                        <li>
+                            formerly called &ldquo;defender methods&rdquo;
+                        </li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>Interface Default Methods</h2>
+                    <blockquote>
+                        &hellip;provides a default implementation for any class that
+                        implements the interface without overriding the method.
+                    </blockquote>
+                    <blockquote>
+                        &hellip;provides a mechanism for multiple inheritance of behavior
+                    </blockquote>
+                    <cite>&mdash; JSR 335, Lambda Specification</cite>
+                </section>
+
+                <section>
+                    <h2>Interface Default Methods</h2>
+                    <ul>
+                        <li>
+                            can <b>not</b> override methods in
+                            <code>java.lang.Object</code> like
+                            <code>toString()</code>, <code>hashCode()</code>,
+                            or <code>equals()</code> to avoid confusion
+                        </li>
+                        <li>
+                            lots of default methods added to collections
+                            classes for Project Lambda-related functionality
+                        </li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>Interface Default Methods</h2>
+                    <pre>
+// in java.lang.Iterable:
+public <b>default</b> void forEach(Consumer&lt;? super T&gt; action) <b>{
+    Objects.requireNonNull(action);
+    for (T t : this) {
+        action.accept(t);
+    }
+}</b>
+                    </pre>
+                </section>
+<!--
+                <section>
+                    <h2>Interface Default Methods</h2>
+                    <pre>
+public interface PhoneNumber {
+
+    public abstract String getAreaCode();
+    public abstract String getNumber();
+    public default String getFullNumber() {
+        return "(" + getAreaCode() + ") " + getNumber();
+    }
+
+    public abstract boolean isOutOfState();
+    public default boolean isLocal() {
+        return !isOutOfState();
+    }
+
+}
+                    </pre>
+                </section>
+-->
+                <section>
+                    <h2>Interface Default Methods</h2>
+                    <h1>Demo</h1>
+                </section>
+
+                <!-- @FunctionalInterface: -->
+                <section>
+                    <h2>New Interface</h2>
+                    <h1>@Functional</h1>
+                    <ul>
+                        <li>
+                            Specifies <b>exactly 1</b> abstract method
+                        </li>
+                        <li>
+                            Sometimes called &ldquo;SAMs&rdquo;
+                            (Single Abstract Method)
+                        </li>
+                        <li>
+                            Declares intention, enforced by compiler,
+                            like <code>@Override</code>
+                        </li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>@Functional Interfaces</h2>
+                    <ul>
+                        <li>
+                            <code>java.lang.Runnable</code>
+                            <br />
+                            &nbsp; &nbsp; <code>void run()</code>
+                        </li>
+                        <li>
+                            <code>java.lang.Comparable</code>
+                            <br />
+                            &nbsp; &nbsp; <code>int compareTo(T o)</code>
+                        </li>
+                        <li>
+                            <code>java.io.Closeable</code>
+                            <br />
+                            &nbsp; &nbsp; <code>void close() throws IOException</code>
+                        </li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>@Functional Interfaces</h2>
+                    <pre>
+@Functional
+public interface Runnable {
+    public abstract void run();
+}
+                    </pre>
+                    Used by new lambda syntax
+                </section>
+
+                <!-- better generic type inference: -->
+                <section>
+                    <h2>Better Generic Type Inference</h2>
+                    <pre>
+class MyList&lt;E&gt; {
+    static &lt;Z&gt; List&lt;Z&gt; empty() { ... }
+    static &lt;Z&gt; List&lt;Z&gt; combine(Z head, List&lt;Z&gt; tail) { ... }
+    E first() { ... }
+}
+
+MyList&lt;String&gt; strings = MyList.empty(); //  Java 7, 8
+MyList.combine("First", MyList&lt;String&gt;.empty()); // 7, 8
+MyList.combine("First", MyList.empty()); // 8, not 7
+
+String str = MyList.&lt;String&gt;empty().first(); // 7, 8
+str = MyList.empty().first(); // 8, not 7
+                    </pre>
+                </section>
+
+                <!-- more annotation sites: -->
+                <section>
+                    <h2>More Annotatable Sites</h2>
+                    <ul>
+                        <li>Introduced in Java5, but only at declaration site</li>
+                        <li>Now available at usage sites also</li>
+                        <li>Detect more errors at compile-time, not run-time</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>More Annotatable Sites</h2>
+                    <p>Could be used at compile-time to prevent:</p>
+                    <ul>
+                        <li>
+                            <code>NullPointerException</code>s via
+                            <code>@Nullable</code>, <code>@NonNull</code>
+                        </li>
+                        <li>
+                            security issues (SQL injection, tainted web input)
+                        </li>
+                        <li>
+                            invalid regex strings
+                        </li>
+                        <li>
+                            missing property file keys
+                        </li>
+                       <li>
+                            invalid class signatures
+                            (<code>Class.forName(...)</code>)
+                        </li>
+                        <li>
+                            mutation of data via <code>@Immutable</code>
+                        </li>
+                        <li>
+                            concurrency errors
+                        </li>
+                    </ul>
+                    <p>Possible now but requires tooling hooks</p>
+                </section>
+
+                <section>
+                    <h2>More Annotatable Sites</h2>
+                    <pre>
+// at instance creation:
+MyObject mo = new @Interned MyObject();
+
+// during type casting:
+ThisObject thisObj = (@NonNull ThisObject) thatOtherObject;
+
+// in <b>implements</b> clause:
+class MyClass implements @ReadOnly YourClass { ... }
+
+// in <b>throws</b> clause:
+void monitorTemperature() throws @Critical TemperatureException { ... }
+                    </pre>
+                </section>
+                
+                <!-- repeatable annotations: -->
+                <section>
+                    <h2>Repeating Annotations</h2>
+                    <pre>
+@Schedule(dayOfWeek="Tue", hour="02")
+@Schedule(dayOfWeek="Thu", hour="02")
+public void deleteOldLogs() { ... }
+                    </pre>
+                    Required noisy nesting syntax before Java 8
+                </section>
+
+                <!-- java.time: -->
+                <section>
+                    <h2>New API</h2>
+                    <h1>java.time</h1>
+                </section>
+
+                <section>
+                    <h2>java.time</h2>
+                    <ul>
+                        <li>Preferred over java.util.Date</li>
+                        <li>j.u.Date has <b>mutable</b> fields</li>
+                        <li>j.u.Date/Calendar non-intuitive</li>
+                        <li>java.time based on <b>Joda-Time</b> but not exact copy</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>java.time</h2>
+                    <ul>
+                        <li>immutable, threadsafe</li>
+                        <li>more fluent API</li>
+                        <li>nanosecond precision</li>
+                        <li>enums, not static integer fields</li>
+                        <li>1-based, not 0-based</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>java.time.Instant</h2>
+                    <ul>
+                        <li>rough equivalent to old <code>java.util.Date</code></li>
+                        <li>&ldquo;an instantaneous point on the timeline&rdquo;</li>
+                        <li>nanosecond precision</li>
+                        <li>
+                            stores &ldquo;epoch seconds&rdquo; in <code>long</code>,
+                            nanoseconds in <code>int</code>
+                        </li>
+                        <li>
+                            convert from old API using
+                            <code>oldDate.toInstant()</code> or
+                            <code>oldCalendar.toInstant()</code>
+                        </li>
+                        <li>
+                            convert from new to old API using
+                            <code>java.util.Date.fromInstant(inst)</code>
+                        </li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>java.time.*</h2>
+                    <ul>
+                        <li>
+                            <code>java.util.LocalDate</code>
+                            <br />
+                            date only (no time or timezone)
+                            <br />
+                            &ldquo;April 15, 1975&rdquo;
+                        </li>
+                        <li>
+                            <code>java.util.LocalTime</code>
+                            <br />
+                            time only (no date, no TZ)
+                            <br />
+                            &ldquo;04:51:12&rdquo; (nanosecond precision)
+                        </li>
+                        <li>
+                            <code>java.util.LocalDateTime</code>
+                            <br />
+                            date &amp; time (no TZ)
+                            <br />
+                            &ldquo;April 15, 1975 04:51:12&rdquo;
+                        </li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>java.time.ZonedDateTime</h2>
+                    <ul>
+                        <li>date/time plus timezone</li>
+                        <li>
+                            bridges the gap from <code>LocalDateTime</code>
+                            to <code>Instant</code>
+                        </li>
+                        <li>
+                            uses <code>ZoneId</code> to represent, e.g.,
+                            &ldquo;America/Chicago&rdquo; or &ldquo;CST&rdquo;
+                        </li>
+                        <li>
+                            uses <code>ZoneRules</code> to store/convey
+                            Daylight Saving Time information
+                        </li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>java.time.OffsetDateTime</h2>
+                    <ul>
+                        <li>date/time plus UTC offset (like &ldquo;-05:00&rdquo;)</li>
+                        <li>uses <code>ZoneOffset</code> to represent the offset</li>
+                        <li><code>OffsetTime</code> for times only</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>Date/Time Parts &amp; Combos</h2>
+                    <ul>
+                        <li>
+                            <code>java.time.Month</code> enum
+                            <br />
+                            Month.JANUARY (== 1, not 0)
+                        </li>
+                        <li>
+                            <code>java.time.DayOfWeek</code> enum
+                            <br />
+                            DayOfWeek.MONDAY (== 1, SUNDAY == 7)
+                        </li>
+                        <li>
+                            <code>java.time.YearMonth</code> class
+                            <br />
+                            &ldquo;April 1975&rdquo;
+                        </li>
+                        <li>
+                            <code>java.time.MonthDay</code>
+                            <br />
+                            &ldquo;April 15&rdquo;
+                        </li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>Spans of Time</h2>
+                    <ul>
+                        <li>
+                            <code>TemporalAmount</code> interface
+                            <br />
+                            with <code>.addTo(...)</code> and
+                            <code>subtractFrom(...)</code>
+                        </li>
+                        <li>
+                            <code>java.time.Duration</code>
+                            <br />
+                            time-based, like &ldquo;34.5 seconds&rdquo;
+                            <br />
+                            works with nanos, millis, seconds, minutes, hours, days
+                        </li>
+                        <li>
+                            <code>java.time.Period</code>
+                            <br />
+                            date-based, like &ldquo;5 years, 3 months, and 2 days&rdquo;
+                            <br />
+                            works with days, months, years
+                        </li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>More Time Stuff</h2>
+                    <ul>
+                        <li>formatters/parsers</li>
+                        <li>
+                            <code>ChronoUnit.DAYS.between(t1, t2)</code>
+                        </li>
+                        <li>
+                            <code>TemporalAdjuster.lastDayOfMonth()</code>
+                        </li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h1>STOP!</h1>
+                    <h2>java time</h2>
+                    <h1>Demo</h1>
+                </section>
+
+                <!-- misc API updates: -->
+                <section>
+                    <h1>Miscellaneous</h1>
+                    <h2>API Additions</h2>
+                </section>
+
+                <section>
+                    <h2>java.util.Objects</h2>
+                    <pre>
+String s1 = null;
+String s2 = "a secret string";
+
+System.out.println(java.util.Objects.isNull(s1)); // true
+System.out.println(java.util.Objects.isNull(s2)); // false
+
+System.out.println(java.util.Objects.nonNull(s1)); // false
+System.out.println(java.util.Objects.nonNull(s2)); // true
+                    </pre>
+                    <p>Useful as predicates in lambda code</p>
+                </section>
+
+                <section>
+                    <h2>java.lang.Math</h2>
+                    <p>
+                        All these throw <code>ArithmeticException</code>
+                        if the operation results in an overflow:
+                    </p>
+                    <ul>
+                        <li>
+                            <code>Math.addExact(int, int)</code>
+                            <br />
+                            <code>Math.addExact(long, long)</code>
+                        </li>
+                        <li><code>Math.subtractExact()</code></li>
+                        <li><code>Math.multiplyExact()</code></li>
+                        <li><code>Math.negateExact()</code></li>
+                        <li><code>Math.decrementExact()</code></li>
+                        <li><code>Match.incrementExact()</code></li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>java.lang.Integer/Long/Double</h2>
+                    <ul>
+                        <li><code>Integer.min(int, int)</code></li>
+                        <li><code>Integer.max(int, int)</code></li>
+                        <li><code>Integer.sum(int, int)</code></li>
+                        <li><code>Long</code> versions of same</li>
+                        <li>Ditto <code>Double</code></li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>java.lang.String</h2>
+                    <pre>
+// prints "Java_User_Group":
+System.out.println(String.join("_", "Java", "User", "Group"));
+
+// same result as above:
+List&lt;String&gt; strings = new ArrayList&lt;&gt;();
+strings.add("Java"); strings.add("User"); strings.add("Group");
+System.out.println(String.join("_", strings);
+                    </pre>
+                </section>
+
+                <section>
+                    <h2>java.util.StringJoiner</h2>
+                    <pre>
+// prints "Java*User*Group":
+StringJoiner sj1 = new StringJoiner("*");
+sj1.add("Java").add("User").add("Group");
+System.out.println(sj1.toString());
+
+// prints "{Java*User*Group}":
+StringJoiner sj2 = new StringJoiner("*", "{", "}");
+sj2.add("Java").add("User").add("Group");
+System.out.println(sj2.toString());
+                    </pre>
+                </section>
+
+                <section>
+                    <h2>java.util.Comparator</h2>
+                    <ul>
+                        <li>
+                            <code>.naturalOrder()</code>
+                            <br />
+                            returns Comparator that uses natural ordering
+                        </li>
+                        <li>
+                            <code>.reverseOrder()</code>
+                        </li>
+                        <li>
+                            <code>.reversed()</code>
+                        </li>
+                        <li>
+                            <code>.nullsFirst()</code>
+                            <br />
+                            <code>.nullsLast()</code>
+                        </li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>java.lang.Process</h2>
+                    <ul>
+                        <li>
+                            <code>someProcess.waitFor(long, timeUnit)</code>
+                        </li>
+                        <li>
+                            <code>someProcess.destroyForcibly()</code>
+                        </li>
+                        <li>
+                            <code>someProcess.isAlive()</code>
+                        </li>
+                    </ul>
+                </section>
+
+                <!-- collections API updates: -->
+                <section>
+                    <h2>Collections API Updates</h2>
+                    <h1>Demo</h1>
+                </section>
+            
+                <!-- parallel array sort: -->
+                <section>
+                    <h2>Arrays.parallelSort()</h2>
+                    <h1>Demo</h1>
+                </section>
+
+                <!-- nashorn: -->
+                <section>
+                    <h2>Nashorn</h2>
+                    <ul>
+                        <li>JavaScript on the JVM</li>
+                        <li>successor to Rhino</li>
+                        <li>ECMAScript-262 5.1-compliant</li>
+                        <li>JS the language, not in-browser (no DOM/CSS)</li>
+                        <li>invoke Java from Javascript, vice versa</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>Nashorn</h2>
+                    <ul>
+                        <li>Via <code>javax.script</code></li>
+                        <li>Via <code>jjs</code> command-line tool</li>
+                        <li><code>jjs</code> adds features for shell scripting</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>Nashorn</h2>
+                    <h1>Demo</h1>
+                </section>
+            
+                <!-- more: -->
+                <section>
+                    <h2>More New Stuff</h2>
+                    <ul>
+                        <li><code>java.util.concurrent</code> API updates</li>
+                        <li>new DocLint tool for finding errors in JavaDoc</li>
+                        <li>Compact Profiles (groundwork for Jigsaw)</li>
+                        <li>
+                            <code>java.util.function</code> for
+                            functional programming &amp; lambdas
+                        </li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>More</h2>
+                    <ul>
+                        <li>Faster <code>javac</code> using parallelism</li>
+                        <li>Better memory usage</li>
+                        <li>
+                            Removal of permgen
+                            (<code>PermSize</code>, <code>MaxPermSize</code>)
+                        </li>
+                        <li>
+                            Access to parameter names at runtime
+                            (no more redundant annotations in method
+                            signatures for Spring, other frameworks)
+                        </li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>Sources</h2>
+                    <ul>
+                        <li>
+                            <a href="http://www.techempower.com/blog/2013/03/26/everything-about-java-8/" target="_blank">
+                                TechEmpower: &ldquo;Everything About Java 8&rdquo;
+                                <br />
+                                <small>http://www.techempower.com/blog/2013/03/26/everything-about-java-8/</small>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="http://openjdk.java.net/projects/jdk8/features" target="_blank">
+                                Java.Net: JDK 8 Features
+                                <br />
+                                <small>http://openjdk.java.net/projects/jdk8/features</small>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://blogs.oracle.com/thejavatutorials/entry/jdk_8_documentation_developer_preview" target="_blank">
+                                Java Tutorials' Weblog: JDK 8 Documentation
+                                <br />
+                                <small>https://blogs.oracle.com/thejavatutorials/entry/jdk_8_documentation_developer_preview</small>
+                            </a>
+                        </li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>Sources</h2>
+                    <ul>
+                        <li>
+                            <a href="http://blog.hartveld.com/2013/03/jdk-8-13-interface-default-method.html" target="_blank">
+                                David Hartveld: Interface Default Method Implementations
+                                <br />
+                                <small>http://blog.hartveld.com/2013/03/jdk-8-13-interface-default-method.html</small>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://blogs.oracle.com/nashorn/entry/csi_nashorn_shell_scripting_in" target="_blank">
+                                Oracle Blogs: Nashorn
+                                <br />
+                                <small>https://blogs.oracle.com/nashorn/entry/csi_nashorn_shell_scripting_in</small>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="http://docs.oracle.com/javase/tutorial/datetime/iso/date.html" target="_blank">
+                                Java Tutorials: Date Classes
+                                <br />
+                                <small>http://docs.oracle.com/javase/tutorial/datetime/iso/date.html</small>
+                            </a>
+                        </li>
+                    </ul>
+                </section>
+
+			</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.min.js"></script>
+
+		<script>
+
+			// Full list of configuration options available here:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+				transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+
+				// Optional libraries used to extend on reveal.js
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/showdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+					{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+					// { src: 'plugin/search/search.js', async: true, condition: function() { return !!document.body.classList; } }
+					// { src: 'plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>

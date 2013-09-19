@@ -1,0 +1,18 @@
+#!/c/dev/jdk1.8.0/bin/jjs -scripting
+
+function test() {
+    var testName = "JavaScript shell scripting!";
+    var date = `date`;
+    java.lang.System.out.println(testName);
+    java.lang.System.out.println("Now = " + date);
+    #print $ARG;
+    print(<<<HEREDOC);
+        shell-style
+        here docs
+        across
+        multiple lines
+HEREDOC
+
+}
+
+test();
